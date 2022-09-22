@@ -1,0 +1,10 @@
+[package]
+name = "prizma_testsuite"
+version = "0.1.0"
+description = "Testsuite application"
+authors = ["CorrienteLabs Maintainers <maintainers@corrientelabs.com>"]
+edition = "2021"
+
+[dependencies]
+clap = { version = "4.0.0-rc.2", features = ["derive"] }
+thiserror = { version = "1.0" }
