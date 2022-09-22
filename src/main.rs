@@ -8,6 +8,7 @@ mod filebuf;
 mod lister;
 mod manual;
 mod runner;
+mod testcases;
 
 use error::Result;
 
