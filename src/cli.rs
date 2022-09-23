@@ -13,7 +13,7 @@ pub struct Application {
 
 #[derive(clap::Subcommand)]
 pub enum Command {
-    #[clap(about = "Run testcases")]
+    #[clap(about = "Run all or selected testcases")]
     Run {},
 
     #[clap(about = "Show available testcases")]

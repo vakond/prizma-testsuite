@@ -1,5 +1,5 @@
 [package]
-name = "prizma_testsuite"
+name = "testsuite"
 version = "0.1.0"
 description = "Testsuite application"
 authors = ["CorrienteLabs Maintainers <maintainers@corrientelabs.com>"]
