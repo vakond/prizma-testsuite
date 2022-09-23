@@ -27,7 +27,7 @@ fn main() {
 
 use crate::cli::{Application, Command};
 
-fn execute(app: Application) -> Result<()> {
+fn execute(app: Application) -> Result<bool> {
     match app.cmd {
         Command::Run {} => runner::execute(),
 

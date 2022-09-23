@@ -2,7 +2,7 @@
 
 use std::{collections::BTreeSet, env, fs, io, path::Path};
 
-/// Collect all testcase module filenames from the project
+/// Collect all testcase filenames from the project tree
 /// and create list of testcases for later use.
 fn main() {
     let msg = "Undefined variable CARGO_MANIFEST_DIR";
