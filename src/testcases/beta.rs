@@ -10,10 +10,14 @@ pub fn get() -> Box<dyn Test> {
 struct Object;
 
 impl Test for Object {
+    fn name(&self) -> String {
+        "beta".to_owned()
+    }
+
     fn setup(&self) {}
 
     fn run(&self) -> Result<bool> {
-        println!("alpha");
+        println!("beta");
         Ok(true)
     }
 

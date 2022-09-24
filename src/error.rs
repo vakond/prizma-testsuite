@@ -12,6 +12,9 @@ pub enum Error {
 
     #[error("input/output")]
     Io(#[from] std::io::Error),
+
+    #[error("mutually exclusive options")]
+    MutuallyExclusive,
 }
 
 pub type Result<T> = std::result::Result<T, Error>;

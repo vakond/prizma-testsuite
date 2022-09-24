@@ -1,10 +1,11 @@
 //! lister.rs
 
-use crate::error::Result;
-
-include!(concat!(env!("OUT_DIR"), "/constant_list_of_testcases.rs"));
+use crate::{config, error::Result};
 
 pub fn execute() -> Result<bool> {
-    println!("{TESTCASES}");
+    let cases = config::enumerate_testcases();
+    for (i, name) in cases {
+        println!("{i}\t{name}");
+    }
     Ok(true)
 }

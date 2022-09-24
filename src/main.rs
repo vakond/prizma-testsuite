@@ -10,7 +10,7 @@ mod manual;
 mod runner;
 mod testcases;
 
-use error::Result;
+use crate::error::Result;
 
 fn main() {
     use std::error::Error as _;
@@ -29,7 +29,7 @@ use crate::cli::{Application, Command};
 
 fn execute(app: Application) -> Result<bool> {
     match app.cmd {
-        Command::Run {} => runner::execute(),
+        Command::Run { select, exclude } => runner::execute(select, exclude),
 
         Command::List {} => lister::execute(),
 

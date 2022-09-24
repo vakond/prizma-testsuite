@@ -6,6 +6,7 @@ fn main() {
     let cases = collect_testcases();
     generate_constant(&cases);
     generate_select_function(&cases);
+    generate_check_function(&cases);
     println!("cargo:rerun-if-changed=build.rs");
 }
 
@@ -59,4 +60,8 @@ fn generate_select_function(_cases: &BTreeSet<String>) {
     //
     //    let msg = format!("Cannot write to `{:?}`", dest_path);
     //    fs::write(&dest_path, &select_function).expect(&msg);
+}
+
+fn generate_check_function(_cases: &BTreeSet<String>) {
+    //
 }
