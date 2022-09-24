@@ -31,7 +31,7 @@ fn execute(app: Application) -> Result<bool> {
     match app.cmd {
         Command::Run { select, exclude } => runner::execute(select, exclude),
 
-        Command::List {} => lister::execute(),
+        Command::List { select, exclude } => lister::execute(select, exclude),
 
         Command::Man {} => manual::execute(),
     }

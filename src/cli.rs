@@ -18,22 +18,34 @@ pub enum Command {
         #[arg(
             short,
             long,
-            help = "Names or numbers of tests to run, comma-delimited",
-            default_value_t = String::default()
+            help = "Optional list of names or numbers of tests to run, comma-delimited"
         )]
-        select: String,
+        select: Option<String>,
 
         #[arg(
             short = 'x',
             long,
-            help = "Names or numbers of tests to exclude from run, comma-delimited",
-            default_value_t = String::default()
+            help = "Optional list of names or numbers of tests to exclude from run, comma-delimited"
         )]
-        exclude: String,
+        exclude: Option<String>,
     },
 
     #[clap(about = "Show available testcases")]
-    List {},
+    List {
+        #[arg(
+            short,
+            long,
+            help = "Optional list of names or numbers of tests to show, comma-delimited"
+        )]
+        select: Option<String>,
+
+        #[arg(
+            short = 'x',
+            long,
+            help = "Optional list of names or numbers of tests to hide, comma-delimited"
+        )]
+        exclude: Option<String>,
+    },
 
     #[clap(about = "Show manual")]
     Man {},

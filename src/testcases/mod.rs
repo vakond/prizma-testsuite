@@ -11,7 +11,7 @@ pub trait Test {
 //include!(concat!(env!("OUT_DIR"), "/select_function.rs"));
 
 use std::collections::HashSet;
-pub fn select(selected: HashSet<String>, excluded: HashSet<String>) -> Vec<Box<dyn Test>> {
+pub fn select(selected: HashSet<String>, excluded: HashSet<String>) -> Vec<(usize, Box<dyn Test>)> {
     let s = !selected.is_empty();
     let x = !excluded.is_empty();
     assert!(!(s && x), "mutually exclusive options");
@@ -22,21 +22,21 @@ pub fn select(selected: HashSet<String>, excluded: HashSet<String>) -> Vec<Box<d
         || (s && (selected.contains("1") || selected.contains("alpha")))
         || (x && !(excluded.contains("1") || excluded.contains("alpha")))
     {
-        tests.push(alpha::get());
+        tests.push((1, alpha::get()));
     }
 
     if (!s && !x)
         || (s && (selected.contains("2") || selected.contains("beta")))
         || (x && !(excluded.contains("2") || excluded.contains("beta")))
     {
-        tests.push(beta::get());
+        tests.push((2, beta::get()));
     }
 
     if (!s && !x)
         || (s && (selected.contains("3") || selected.contains("gamma")))
         || (x && !(excluded.contains("3") || excluded.contains("gamma")))
     {
-        tests.push(gamma::get());
+        tests.push((3, gamma::get()));
     }
 
     tests

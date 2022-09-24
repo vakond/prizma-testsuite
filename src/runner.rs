@@ -4,29 +4,28 @@ use crate::{
     error::{Error, Result},
     testcases,
 };
-use std::collections::HashSet;
 
-pub fn execute(select: String, exclude: String) -> Result<bool> {
-    if !select.is_empty() && !exclude.is_empty() {
+pub fn execute(select: Option<String>, exclude: Option<String>) -> Result<bool> {
+    use std::collections::HashSet;
+
+    if select.is_some() && exclude.is_some() {
         return Err(Error::MutuallyExclusive);
     }
 
-    let selected: HashSet<String> = select
-        .split(',')
-        .map(|s| s.trim().to_string())
-        .filter(|s| !s.is_empty())
-        .collect();
-    let excluded: HashSet<String> = exclude
-        .split(',')
-        .map(|s| s.trim().to_string())
-        .filter(|s| !s.is_empty())
-        .collect();
+    let mut selected = HashSet::new();
+    if let Some(select) = select {
+        selected = select.split(',').map(|s| s.trim().to_string()).collect();
+    }
+    let mut excluded = HashSet::new();
+    if let Some(exclude) = exclude {
+        excluded = exclude.split(',').map(|s| s.trim().to_string()).collect();
+    }
 
     let tests = testcases::select(selected, excluded);
 
     let mut ok = true;
 
-    for test in tests {
+    for (_, test) in tests {
         if !test.run().unwrap() {
             ok = false;
         }
