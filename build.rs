@@ -53,5 +53,10 @@ fn generate_constant(cases: &BTreeSet<String>) {
 }
 
 fn generate_select_function(_cases: &BTreeSet<String>) {
+    //    let msg = "Undefined variable OUT_DIR";
+    //    let out_dir = env::var_os("OUT_DIR").expect(msg);
+    //    let dest_path = Path::new(&out_dir).join("select_function.rs");
     //
+    //    let msg = format!("Cannot write to `{:?}`", dest_path);
+    //    fs::write(&dest_path, &select_function).expect(&msg);
 }

@@ -3,14 +3,19 @@
 use super::Test;
 use crate::error::Result;
 
-pub fn get() -> impl Test {
-    Alpha
+pub fn get() -> Box<dyn Test> {
+    Box::new(Object {})
 }
 
-struct Alpha;
+struct Object;
 
-impl Test for Alpha {
+impl Test for Object {
+    fn setup(&self) {}
+
     fn run(&self) -> Result<bool> {
+        println!("alpha");
         Ok(true)
     }
+
+    fn teardown(&self) {}
 }
