@@ -5,6 +5,7 @@ use std::{collections::BTreeSet, env, fs, path::Path};
 fn main() {
     let cases = collect_testcases();
     generate_select_function(&cases);
+    generate_verify_function(&cases);
     generate_check_function(&cases);
     println!("cargo:rerun-if-changed=build.rs");
 }
@@ -68,14 +69,38 @@ fn generate_select_function(cases: &BTreeSet<String>) {
     text += "\n";
     text += "}\n";
 
-    let err = "Undefined variable OUT_DIR";
-    let out_dir = env::var_os("OUT_DIR").expect(err);
-    let dest_path = Path::new(&out_dir).join("select_function.rs");
+    dump_to_file(&text, "select_function.rs");
+}
 
-    let err = format!("Cannot write to `{:?}`", dest_path);
-    fs::write(&dest_path, &text).expect(&err);
+fn generate_verify_function(cases: &BTreeSet<String>) {
+    let mut text = String::from("pub fn verify() -> crate::error::Result<()> {\n");
+
+    for item in cases.iter() {
+        let test_name = Path::new(&item).with_extension("");
+        text += &format!("let test = {}::get();\n", test_name.display());
+        text += &format!("if test.name() != \"{}\" {{\n", test_name.display());
+        text += &format!(
+            "return Err(crate::error::Error::InconsistentTestcase(\"{}\", test.name()));\n",
+            test_name.display()
+        );
+        text += "}\n";
+    }
+
+    text += "Ok(())\n";
+    text += "}\n";
+
+    dump_to_file(&text, "verify_function.rs");
 }
 
 fn generate_check_function(_cases: &BTreeSet<String>) {
     //
+}
+
+fn dump_to_file(text: &str, filename: &str) {
+    let err = "Undefined variable OUT_DIR";
+    let out_dir = env::var_os("OUT_DIR").expect(err);
+    let dest_path = Path::new(&out_dir).join(filename);
+
+    let err = format!("Cannot write to `{:?}`", dest_path);
+    fs::write(&dest_path, text).expect(&err);
 }

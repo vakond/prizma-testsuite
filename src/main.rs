@@ -28,6 +28,8 @@ fn main() {
 use crate::cli::{Application, Command};
 
 fn execute(app: Application) -> Result<bool> {
+    testcases::verify()?;
+
     match app.cmd {
         Command::Run { select, exclude } => runner::execute(select, exclude),
 

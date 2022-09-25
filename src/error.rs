@@ -15,6 +15,9 @@ pub enum Error {
 
     #[error("mutually exclusive options")]
     MutuallyExclusive,
+
+    #[error("testcase '{0}' returns inconsistent name '{1}'")]
+    InconsistentTestcase(&'static str, &'static str),
 }
 
 pub type Result<T> = std::result::Result<T, Error>;
