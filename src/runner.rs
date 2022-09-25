@@ -21,7 +21,7 @@ pub fn execute(select: Option<String>, exclude: Option<String>) -> Result<bool> 
         excluded = exclude.split(',').map(|s| s.trim().to_string()).collect();
     }
 
-    let tests = testcases::select(selected, excluded);
+    let tests = testcases::select(selected, excluded)?;
 
     let mut ok = true;
 

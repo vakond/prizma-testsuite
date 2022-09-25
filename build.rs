@@ -36,11 +36,12 @@ fn collect_testcases() -> BTreeSet<String> {
 }
 
 fn generate_select_function(cases: &BTreeSet<String>) {
-    let mut text = String::from("use std::collections::HashSet;");
-    text += "pub fn select(selected: HashSet<String>, excluded: HashSet<String>) -> Vec<(usize, Box<dyn Test>)> {\n";
+    let mut text = String::from("pub fn select(selected: std::collections::HashSet<String>, excluded: std::collections::HashSet<String>) -> crate::error::Result<Vec<(usize, Box<dyn Test>)>> {\n");
     text += "let s = !selected.is_empty();\n";
     text += "let x = !excluded.is_empty();\n";
     text += "assert!(!(s && x), \"mutually exclusive options\");\n";
+    text += "check(&selected)?;\n";
+    text += "check(&excluded)?;\n";
     text += "let mut tests = Vec::new();\n";
 
     for (index, item) in cases.iter().enumerate() {
@@ -65,8 +66,7 @@ fn generate_select_function(cases: &BTreeSet<String>) {
         text += "}\n";
     }
 
-    text += r#"tests"#;
-    text += "\n";
+    text += "Ok(tests)\n";
     text += "}\n";
 
     dump_to_file(&text, "select_function.rs");
@@ -92,8 +92,29 @@ fn generate_verify_function(cases: &BTreeSet<String>) {
     dump_to_file(&text, "verify_function.rs");
 }
 
-fn generate_check_function(_cases: &BTreeSet<String>) {
-    //
+fn generate_check_function(cases: &BTreeSet<String>) {
+    let mut text = String::from(
+        "pub fn check(set: &std::collections::HashSet<String>) -> crate::error::Result<()> {\n",
+    );
+
+    text += "for item in set.iter() {\n";
+    text += "if let Ok(n) = item.parse::<usize>() {\n";
+    text += &format!("if !(1..={}).contains(&n) {{\n", cases.len());
+    text += "return Err(crate::error::Error::InvalidIndex(n));\n";
+    text += "}\n";
+    text += "}\n";
+    for item in cases.iter() {
+        let test_name = Path::new(&item).with_extension("");
+        text += &format!("if item == \"{}\" {{\n", test_name.display());
+        text += "break;\n";
+        text += "}\n";
+    }
+    text += "}\n";
+
+    text += "Ok(())\n";
+    text += "}\n";
+
+    dump_to_file(&text, "check_function.rs");
 }
 
 fn dump_to_file(text: &str, filename: &str) {

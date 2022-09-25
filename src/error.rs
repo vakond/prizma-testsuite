@@ -18,6 +18,9 @@ pub enum Error {
 
     #[error("testcase '{0}' returns inconsistent name '{1}'")]
     InconsistentTestcase(&'static str, &'static str),
+
+    #[error("index '{0}' is out of range")]
+    InvalidIndex(usize),
 }
 
 pub type Result<T> = std::result::Result<T, Error>;

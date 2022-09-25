@@ -1,6 +1,7 @@
 //! testcases/mod.rs
 
 include!(concat!(env!("OUT_DIR"), "/verify_function.rs"));
+include!(concat!(env!("OUT_DIR"), "/check_function.rs"));
 include!(concat!(env!("OUT_DIR"), "/select_function.rs"));
 
 /// Unified interface of all test cases.
