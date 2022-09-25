@@ -1,4 +1,4 @@
-//! alpha.rs
+//! testcases/alpha.rs
 
 use super::Test;
 use crate::error::Result;
@@ -10,8 +10,8 @@ pub fn get() -> Box<dyn Test> {
 struct Object;
 
 impl Test for Object {
-    fn name(&self) -> String {
-        "alpha".to_owned()
+    fn name(&self) -> &'static str {
+        "alpha"
     }
 
     fn setup(&self) {}

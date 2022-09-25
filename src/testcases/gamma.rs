@@ -1,4 +1,4 @@
-//! gamma.rs
+//! testcases/gamma.rs
 
 use super::Test;
 use crate::error::Result;
@@ -10,8 +10,8 @@ pub fn get() -> Box<dyn Test> {
 struct Object;
 
 impl Test for Object {
-    fn name(&self) -> String {
-        "gamma".to_owned()
+    fn name(&self) -> &'static str {
+        "gamma"
     }
 
     fn setup(&self) {}
