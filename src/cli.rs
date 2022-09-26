@@ -28,6 +28,9 @@ pub enum Command {
             help = "Optional list of names or numbers of tests to exclude from run, comma-delimited"
         )]
         exclude: Option<String>,
+
+        #[arg(long, help = "Execute tests one after one in a single thread")]
+        sequential: bool,
     },
 
     #[clap(about = "Show available testcases")]

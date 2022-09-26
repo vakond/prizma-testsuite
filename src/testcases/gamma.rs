@@ -19,11 +19,12 @@ impl Test for Object {
 
     fn run(&self) -> Result<bool> {
         use rand::Rng as _;
-        println!("enter gamma");
+        println!("enter {}", self.name());
         let mut rng = rand::thread_rng();
         let delay = Duration::from_millis(rng.gen_range(1..=1000));
+        println!("{} sleeps {:?}", self.name(), delay);
         thread::sleep(delay);
-        println!("leave gamma");
+        println!("leave {}", self.name());
         Ok(true)
     }
 

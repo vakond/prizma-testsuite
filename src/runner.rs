@@ -2,10 +2,10 @@
 
 use crate::{
     error::{Error, Result},
-    testcases,
+    testcases::{self, Test},
 };
 
-pub fn execute(select: Option<String>, exclude: Option<String>) -> Result<()> {
+pub fn execute(select: Option<String>, exclude: Option<String>, sequential: bool) -> Result<()> {
     use std::collections::HashSet;
 
     if select.is_some() && exclude.is_some() {
@@ -21,23 +21,51 @@ pub fn execute(select: Option<String>, exclude: Option<String>) -> Result<()> {
         excluded = exclude.split(',').map(|s| s.trim().to_string()).collect();
     }
 
-    let mut tests = testcases::select(selected, excluded)?;
+    let tests = testcases::select(selected, excluded)?;
 
+    let results = if sequential {
+        sequential_run(tests)
+    } else {
+        parallel_run(tests)
+    };
+
+    dbg!(results);
+
+    Ok(())
+}
+
+fn sequential_run(mut tests: Vec<(usize, Box<dyn Test + Send>)>) -> Vec<bool> {
+    tests
+        .iter_mut()
+        .map(|test| {
+            let t = &test.1;
+            t.setup();
+            if !t.run().unwrap() {
+                println!("failed");
+                return false;
+            }
+            t.teardown();
+            println!("ok");
+            true
+        })
+        .collect()
+}
+
+fn parallel_run(mut tests: Vec<(usize, Box<dyn Test + Send>)>) -> Vec<bool> {
     use rayon::prelude::*;
 
-    let r: Vec<bool> = tests
+    tests
         .par_iter_mut()
         .map(|test| {
             let t = &test.1;
             t.setup();
             if !t.run().unwrap() {
                 println!("failed");
+                return false;
             }
             t.teardown();
+            println!("ok");
             true
         })
-        .collect();
-    dbg!(r);
-
-    Ok(())
+        .collect()
 }

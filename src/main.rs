@@ -31,7 +31,11 @@ fn execute(app: Application) -> Result<()> {
     testcases::verify()?;
 
     match app.cmd {
-        Command::Run { select, exclude } => runner::execute(select, exclude),
+        Command::Run {
+            select,
+            exclude,
+            sequential,
+        } => runner::execute(select, exclude, sequential),
 
         Command::List { select, exclude } => lister::execute(select, exclude),
 
