@@ -7,5 +7,6 @@ edition = "2021"
 
 [dependencies]
 clap = { version = "4.0.0-rc.2", features = ["derive"] }
+rand = { version = "0.8" }
 rayon = { version = "1.5" }
 thiserror = { version = "1.0" }
