@@ -99,16 +99,22 @@ fn generate_check_function(cases: &BTreeSet<String>) {
 
     text += "for item in set.iter() {\n";
     text += "if let Ok(n) = item.parse::<usize>() {\n";
-    text += &format!("if !(1..={}).contains(&n) {{\n", cases.len());
+    text += &format!("if (1..={}).contains(&n) {{\n", cases.len());
+    text += "continue;\n";
+    text += "} else {\n";
     text += "return Err(crate::error::Error::InvalidIndex(n));\n";
     text += "}\n";
     text += "}\n";
+    text += "let mut found = false;\n";
     for item in cases.iter() {
         let test_name = Path::new(&item).with_extension("");
         text += &format!("if item == \"{}\" {{\n", test_name.display());
-        text += "break;\n";
+        text += "found = true;\n";
         text += "}\n";
     }
+    text += "if !found {\n";
+    text += "return Err(crate::error::Error::NameNotFound(item.to_string()));\n";
+    text += "}\n";
     text += "}\n";
 
     text += "Ok(())\n";

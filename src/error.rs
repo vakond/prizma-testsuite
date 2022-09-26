@@ -21,6 +21,9 @@ pub enum Error {
 
     #[error("index '{0}' is out of range")]
     InvalidIndex(usize),
+
+    #[error("name '{0}' is not found as testcase")]
+    NameNotFound(String),
 }
 
 pub type Result<T> = std::result::Result<T, Error>;
