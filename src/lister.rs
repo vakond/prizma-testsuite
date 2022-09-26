@@ -5,7 +5,7 @@ use crate::{
     testcases,
 };
 
-pub fn execute(select: Option<String>, exclude: Option<String>) -> Result<bool> {
+pub fn execute(select: Option<String>, exclude: Option<String>) -> Result<()> {
     use std::collections::HashSet;
 
     if select.is_some() && exclude.is_some() {
@@ -27,5 +27,5 @@ pub fn execute(select: Option<String>, exclude: Option<String>) -> Result<bool> 
         println!("{}\t{}", index, test.name());
     }
 
-    Ok(true)
+    Ok(())
 }

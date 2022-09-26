@@ -35,8 +35,9 @@ fn collect_testcases() -> BTreeSet<String> {
     sorted_items
 }
 
+/// Generate function which can iterate all available testcases and filter the list.
 fn generate_select_function(cases: &BTreeSet<String>) {
-    let mut text = String::from("pub fn select(selected: std::collections::HashSet<String>, excluded: std::collections::HashSet<String>) -> crate::error::Result<Vec<(usize, Box<dyn Test>)>> {\n");
+    let mut text = String::from("pub fn select(selected: std::collections::HashSet<String>, excluded: std::collections::HashSet<String>) -> crate::error::Result<Vec<(usize, Box<dyn Test + Send>)>> {\n");
     text += "let s = !selected.is_empty();\n";
     text += "let x = !excluded.is_empty();\n";
     text += "assert!(!(s && x), \"mutually exclusive options\");\n";
@@ -72,6 +73,8 @@ fn generate_select_function(cases: &BTreeSet<String>) {
     dump_to_file(&text, "select_function.rs");
 }
 
+/// Generate function to verify that all testcases are consistent.
+/// This function runs once before any processing.
 fn generate_verify_function(cases: &BTreeSet<String>) {
     let mut text = String::from("pub fn verify() -> crate::error::Result<()> {\n");
 
@@ -92,6 +95,7 @@ fn generate_verify_function(cases: &BTreeSet<String>) {
     dump_to_file(&text, "verify_function.rs");
 }
 
+/// Generate function to check correctness of a user input.
 fn generate_check_function(cases: &BTreeSet<String>) {
     let mut text = String::from(
         "pub fn check(set: &std::collections::HashSet<String>) -> crate::error::Result<()> {\n",

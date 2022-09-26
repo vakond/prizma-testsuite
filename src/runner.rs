@@ -5,7 +5,7 @@ use crate::{
     testcases,
 };
 
-pub fn execute(select: Option<String>, exclude: Option<String>) -> Result<bool> {
+pub fn execute(select: Option<String>, exclude: Option<String>) -> Result<()> {
     use std::collections::HashSet;
 
     if select.is_some() && exclude.is_some() {
@@ -21,15 +21,23 @@ pub fn execute(select: Option<String>, exclude: Option<String>) -> Result<bool> 
         excluded = exclude.split(',').map(|s| s.trim().to_string()).collect();
     }
 
-    let tests = testcases::select(selected, excluded)?;
+    let mut tests = testcases::select(selected, excluded)?;
 
-    let mut ok = true;
+    use rayon::prelude::*;
 
-    for (_, test) in tests {
-        if !test.run().unwrap() {
-            ok = false;
-        }
-    }
+    let r: Vec<bool> = tests
+        .par_iter_mut()
+        .map(|test| {
+            let t = &test.1;
+            t.setup();
+            if !t.run().unwrap() {
+                println!("failed");
+            }
+            t.teardown();
+            true
+        })
+        .collect();
+    dbg!(r);
 
-    Ok(ok)
+    Ok(())
 }

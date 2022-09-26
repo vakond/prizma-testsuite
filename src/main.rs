@@ -27,7 +27,7 @@ fn main() {
 
 use crate::cli::{Application, Command};
 
-fn execute(app: Application) -> Result<bool> {
+fn execute(app: Application) -> Result<()> {
     testcases::verify()?;
 
     match app.cmd {

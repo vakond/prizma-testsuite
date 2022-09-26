@@ -3,7 +3,7 @@
 use super::Test;
 use crate::error::Result;
 
-pub fn get() -> Box<dyn Test> {
+pub fn get() -> Box<dyn Test + Send> {
     Box::new(Object {})
 }
 

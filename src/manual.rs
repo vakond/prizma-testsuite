@@ -2,6 +2,6 @@
 
 use crate::error::Result;
 
-pub fn execute() -> Result<bool> {
-    Ok(true)
+pub fn execute() -> Result<()> {
+    Ok(())
 }
