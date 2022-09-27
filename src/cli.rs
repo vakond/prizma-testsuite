@@ -9,8 +9,6 @@ pub struct Application {
     pub cmd: Command,
 }
 
-//use std::path::PathBuf;
-
 #[derive(clap::Subcommand)]
 pub enum Command {
     #[clap(about = "Run all or selected testcases")]

@@ -10,12 +10,12 @@ mod manual;
 mod runner;
 mod testcases;
 
-use crate::error::Result;
+use error::Result;
 
 fn main() {
     use std::error::Error as _;
     if let Err(err) = execute(cli::application()) {
-        eprintln!("Error: {}", err);
+        eprintln!("Error: {err}");
         let mut err = err.source();
         while let Some(cause) = err {
             eprintln!("Caused by:\n\t{}", cause);
@@ -25,7 +25,7 @@ fn main() {
     }
 }
 
-use crate::cli::{Application, Command};
+use cli::{Application, Command};
 
 fn execute(app: Application) -> Result<()> {
     testcases::verify()?;

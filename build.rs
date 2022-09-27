@@ -1,7 +1,5 @@
 //! build.rs
 
-use std::{collections::BTreeSet, env, fs, path::Path};
-
 fn main() {
     let cases = collect_testcases();
     generate_select_function(&cases);
@@ -9,6 +7,8 @@ fn main() {
     generate_check_function(&cases);
     println!("cargo:rerun-if-changed=build.rs");
 }
+
+use std::{collections::BTreeSet, env, fs, path::Path};
 
 /// Collect all testcase filenames from the project tree
 /// and generate code working with the actual set of testcases.
