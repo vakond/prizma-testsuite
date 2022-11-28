@@ -2,7 +2,7 @@
 name = "testsuite"
 version = "0.1.0"
 description = "Testsuite application"
-authors = ["CorrienteLabs Maintainers <maintainers@corrientelabs.com>"]
+authors = ["WK <wassily.kondratiev@gmail.com>"]
 edition = "2021"
 
 [dependencies]
